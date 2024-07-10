@@ -1,13 +1,24 @@
-const { response } = require('express')
-const express = require ('express')
+const { response } = require("express");
+const express = require("express");
 //import express from "express"
 
-const PORT = 3333
+const PORT = 3333;
 
-const app = express()
+const app = express();
 
 //*Aceitar JSON
-app.use(express.json())
+app.use(express.json());
+
+// Middleware
+const logRoutes = (request, response, next) => {
+  const { url, method } = request;
+  const rota = `[${method.toUpperCase()}] ${url}`;
+  console.log(rota);
+  next();
+};
+
+//* Middleware para todas as rotas
+app.use(logRoutes);
 
 //Rotas
 /**Request HTTP
@@ -19,59 +30,38 @@ app.use(express.json())
  *  Rotas do tipo POST (cadastro de informações)
  */
 
-//Rota get
-app.get('/users',(request,response)=>{
-    const query = request.query
-    // console.log(query)
-    const {nome,idade} = request.query
-    console.log(nome,idade)
+const user = [];
 
-    response.status(200).json([
-        'Pessoa 1',
-        'Pessoa 2',
-        'Pessoa 3'
+app.get("/users", (request, response) => {
+  response.status(200).json(users);
+});
 
-    ])
-})
+app.post("/users", (request, response) => {
+  const { nome, idade } = request.body;
 
-app.post("/users",(request,response)=>{
-    const body = request.body
-    // console.log(body)
-    const {nome,idade} = request.body
-    console.log(nome,idade)
-    response.status(200).json([
+  if (!nome) {
+    response.status(422).json({ message: "O nome é obrigatório" });
+    return;
+  }
+  if (!idade) {
+    response.status(201).json("Pessoa 1", "Pessoa 2", "Pessoa 3", "Pessoa4");
+    return;
+  }
+});
 
-        'Pessoa 1',
-        'Pessoa 2',
-        'Pessoa 3',
-        'Pessoa 4'
-    ])
-})
+app.put("/users/:id/:cpf", (request, response) => {
+  // const params = request.params
+  // console.log(params)
+  const { id, cpf } = request.params;
+  console.log(id, cpf);
 
-app.put("/users/:id/:cpf",(request,response)=>{
-    // const params = request.params 
-    // console.log(params)
-    const {id,cpf} = request.params
-    console.log(id,cpf)
+  response.status(200).json(["Pessoa 1", "Pessoa 10", "Pessoa 3", "Pessoa 4"]);
+});
 
-    response.status(200).json([
-        'Pessoa 1',
-        'Pessoa 10',
-        'Pessoa 3',
-        'Pessoa 4'
-    ])
-})
+app.delete("/users", (request, response) => {
+  response.status(204).json(["Pessoa 1", "Pessoa 10", "Pessoa 3", "Pessoa 4"]);
+});
 
-app.delete("/users",(request,response)=>{
-    response.status(204).json([
-        'Pessoa 1',
-        'Pessoa 10',
-        'Pessoa 3',
-        'Pessoa 4'
-    ])
-})
-
-
-app.listen(PORT,()=>{
-    console.log("Servidor on port"+PORT)
-})  
+app.listen(PORT, () => {
+  console.log("Servidor on port" + PORT);
+});
