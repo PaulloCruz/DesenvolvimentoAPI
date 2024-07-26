@@ -1,8 +1,8 @@
-import conn from "../config/conn";
+import conn from "../config/conn.js";
 
 const tableLinhas = /*sql*/ `
     CREATE TABLE IF NOT EXISTS linhas(
-        id INT AUTO_INCREMENTE NOT NULL,
+        id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
         nome_linha VARCHAR(255) NOT NULL,
         numero_linha INT NOT NULL,
         itinerario VARCHAR(255) NOT NULL,
@@ -11,7 +11,7 @@ const tableLinhas = /*sql*/ `
     )
 `
 
-conn.quety(tableLinhas,(err)=>{
+conn.query(tableLinhas,(err)=>{
     if(err){
         console.error("Erro ao criar a tabela",err.stack)
         return

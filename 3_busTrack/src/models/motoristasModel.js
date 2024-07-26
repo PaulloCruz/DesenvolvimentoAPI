@@ -1,9 +1,9 @@
 import { CONNREFUSED } from "dns";
-import conn from "../config/conn";
+import conn from "../config/conn.js";
 
 const tableMotoristas = /*sql*/ `
     CREATE TABLE IF NOT EXISTS motoristas(
-        id INT PRIMARY KEY AUTO_INCREMENTE NOT NULL,
+        id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
         nome VARCHAR(150),
         data_nascimento DATE NOT NULL,
         numero_carteira_habilitacao VARCHAR(255) NOT NULL
